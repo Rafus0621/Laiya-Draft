@@ -1,0 +1,3857 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laiya Gourmet - Premium Catering Services</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#22c55e">
+    <link rel="apple-touch-icon" href="https://images.unsplash.com/photo-1555244162-803834f70033?ixlib=rb-4.0.3&auto=format&fit=crop&w=192&q=80">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #22c55e;
+            --secondary-color: #16a34a;
+            --accent-color: #15803d;
+            --dark-color: #1f2937;
+            --light-color: #f8fafc;
+            --text-color: #374151;
+            --bg-color: #ffffff;
+            --card-bg: #ffffff;
+            --border-color: #e5e7eb;
+            --gradient-primary: linear-gradient(135deg, #22c55e, #16a34a);
+            --gradient-secondary: linear-gradient(135deg, #16a34a, #15803d);
+            --gradient-accent: linear-gradient(135deg, #15803d, #166534);
+            --shadow-light: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --shadow-medium: 0 10px 25px rgba(0, 0, 0, 0.15);
+            --shadow-heavy: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        [data-theme="dark"] {
+            --primary-color: #34d399;
+            --secondary-color: #10b981;
+            --accent-color: #059669;
+            --dark-color: #111827;
+            --light-color: #1f2937;
+            --text-color: #f9fafb;
+            --bg-color: #111827;
+            --card-bg: #1f2937;
+            --border-color: #374151;
+            --gradient-primary: linear-gradient(135deg, #34d399, #10b981);
+            --gradient-secondary: linear-gradient(135deg, #10b981, #059669);
+            --gradient-accent: linear-gradient(135deg, #059669, #047857);
+            --shadow-light: 0 4px 6px rgba(0, 0, 0, 0.3);
+            --shadow-medium: 0 10px 25px rgba(0, 0, 0, 0.4);
+            --shadow-heavy: 0 20px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Dark mode specific text improvements */
+        [data-theme="dark"] .chat-message.bot {
+            background: #374151;
+            color: #f9fafb;
+        }
+
+        [data-theme="dark"] .menu-item {
+            background: #1f2937;
+            color: #f9fafb;
+        }
+
+        [data-theme="dark"] .menu-item h4 {
+            color: #34d399;
+        }
+
+        [data-theme="dark"] .menu-item p {
+            color: #d1d5db;
+        }
+
+        [data-theme="dark"] .blog-meta {
+            color: #9ca3af;
+        }
+
+        [data-theme="dark"] .blog-excerpt {
+            color: #d1d5db;
+        }
+
+        [data-theme="dark"] .testimonial-text {
+            color: #f9fafb;
+        }
+
+        [data-theme="dark"] .testimonial-role {
+            color: #9ca3af;
+        }
+
+        [data-theme="dark"] .section-subtitle {
+            color: #9ca3af;
+        }
+
+        [data-theme="dark"] .about-text {
+            color: #f9fafb;
+        }
+
+        [data-theme="dark"] .service-content p {
+            color: #d1d5db;
+        }
+
+        [data-theme="dark"] .service-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+        }
+
+        [data-theme="dark"] .service-content {
+            background: var(--card-bg);
+            color: var(--text-color);
+        }
+
+        [data-theme="dark"] .service-title {
+            color: var(--primary-color);
+        }
+
+        [data-theme="dark"] .feature-card p {
+            color: #d1d5db;
+        }
+
+        [data-theme="dark"] .contact-form {
+            background: #1f2937;
+            color: #f9fafb;
+        }
+
+        [data-theme="dark"] .form-group label {
+            color: #f9fafb;
+        }
+
+        [data-theme="dark"] .form-group input,
+        [data-theme="dark"] .form-group textarea,
+        [data-theme="dark"] .form-group select {
+            background: #374151;
+            color: #f9fafb;
+            border-color: #4b5563;
+        }
+
+        [data-theme="dark"] .form-group input::placeholder,
+        [data-theme="dark"] .form-group textarea::placeholder {
+            color: #9ca3af;
+        }
+
+        [data-theme="dark"] .search-input {
+            background: #374151;
+            color: #f9fafb;
+            border-color: #4b5563;
+        }
+
+        [data-theme="dark"] .search-input::placeholder {
+            color: #9ca3af;
+        }
+
+        [data-theme="dark"] .search-result-item {
+            color: #f9fafb;
+        }
+
+        [data-theme="dark"] .search-result-item:hover {
+            background: #374151;
+        }
+
+        [data-theme="dark"] .newsletter-content {
+            background: #1f2937;
+            color: #f9fafb;
+        }
+
+        [data-theme="dark"] .newsletter-input {
+            background: #374151;
+            color: #f9fafb;
+            border-color: #4b5563;
+        }
+
+        [data-theme="dark"] .newsletter-input::placeholder {
+            color: #9ca3af;
+        }
+
+        [data-theme="dark"] .review-card {
+            background: #1f2937;
+            color: #f9fafb;
+        }
+
+        [data-theme="dark"] .booking-content {
+            background: #1f2937;
+            color: #f9fafb;
+        }
+
+        [data-theme="dark"] .menu-tab {
+            background: #374151;
+            color: #f9fafb;
+            border-color: #4b5563;
+        }
+
+        [data-theme="dark"] .filter-btn {
+            background: #374151;
+            color: #f9fafb;
+            border-color: #4b5563;
+        }
+
+        [data-theme="dark"] .tour-btn {
+            background: var(--gradient-primary);
+            color: white;
+        }
+
+        [data-theme="dark"] .builder-item span {
+            color: #f9fafb;
+        }
+
+        [data-theme="dark"] .calc-result {
+            background: var(--gradient-primary);
+            color: white;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            overflow-x: hidden;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* Theme Toggle Button */
+        .theme-toggle {
+            position: fixed;
+            top: 50%;
+            right: 20px;
+            transform: translateY(-50%);
+            z-index: 1002;
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: var(--shadow-medium);
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-50%) scale(1.1);
+            box-shadow: var(--shadow-heavy);
+        }
+
+        /* Toast Notifications */
+        .toast-container {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            z-index: 3000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .toast {
+            background: var(--card-bg);
+            color: var(--text-color);
+            padding: 1rem 1.5rem;
+            border-radius: 15px;
+            box-shadow: var(--shadow-medium);
+            border-left: 4px solid var(--primary-color);
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            max-width: 350px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .toast.success {
+            border-left-color: #10b981;
+        }
+
+        .toast.error {
+            border-left-color: #ef4444;
+        }
+
+        .toast.warning {
+            border-left-color: #f59e0b;
+        }
+
+        .toast.info {
+            border-left-color: #3b82f6;
+        }
+
+        /* Live Chat Widget */
+        .chat-widget {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 2000;
+        }
+
+        .chat-toggle {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            font-size: 1.8rem;
+            cursor: pointer;
+            box-shadow: var(--shadow-heavy);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .chat-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        .chat-window {
+            position: absolute;
+            bottom: 80px;
+            right: 0;
+            width: 350px;
+            height: 500px;
+            background: var(--card-bg);
+            border-radius: 20px;
+            box-shadow: var(--shadow-heavy);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        .chat-header {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 1rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .chat-message {
+            max-width: 80%;
+            padding: 0.8rem 1rem;
+            border-radius: 15px;
+            word-wrap: break-word;
+        }
+
+        .chat-message.user {
+            background: var(--primary-color);
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 5px;
+        }
+
+        .chat-message.bot {
+            background: var(--light-color);
+            color: var(--text-color);
+            align-self: flex-start;
+            border-bottom-left-radius: 5px;
+        }
+
+        .chat-input-container {
+            padding: 1rem;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            gap: 10px;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 0.8rem;
+            border: 1px solid var(--border-color);
+            border-radius: 25px;
+            outline: none;
+            background: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        .chat-send {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Newsletter Popup */
+        .newsletter-popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 3500;
+            backdrop-filter: blur(5px);
+        }
+
+        .newsletter-content {
+            background: var(--card-bg);
+            padding: 3rem;
+            border-radius: 25px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            position: relative;
+            animation: fadeInUp 0.5s ease;
+        }
+
+        .newsletter-close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-color);
+        }
+
+        .newsletter-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        .newsletter-form {
+            display: flex;
+            gap: 10px;
+            margin-top: 2rem;
+        }
+
+        .newsletter-input {
+            flex: 1;
+            padding: 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 15px;
+            outline: none;
+            background: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        .newsletter-submit {
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 15px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        /* Advanced Search */
+        .search-container {
+            position: relative;
+            max-width: 600px;
+            margin: 2rem auto;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 1.2rem 3rem 1.2rem 1.5rem;
+            border: 2px solid var(--border-color);
+            border-radius: 25px;
+            font-size: 1.1rem;
+            outline: none;
+            background: var(--card-bg);
+            color: var(--text-color);
+            transition: border-color 0.3s ease;
+        }
+
+        .search-input:focus {
+            border-color: var(--primary-color);
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-color);
+            font-size: 1.2rem;
+        }
+
+        .search-results {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 15px;
+            box-shadow: var(--shadow-medium);
+            max-height: 400px;
+            overflow-y: auto;
+            z-index: 1000;
+            display: none;
+        }
+
+        .search-result-item {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .search-result-item:hover {
+            background: var(--light-color);
+        }
+
+        .search-result-item:last-child {
+            border-bottom: none;
+        }
+
+        /* Review System */
+        .review-section {
+            background: var(--light-color);
+            padding: 6rem 4rem;
+            border-radius: 30px;
+            margin: 6rem 0;
+        }
+
+        .review-form {
+            background: var(--card-bg);
+            padding: 3rem;
+            border-radius: 20px;
+            margin-bottom: 3rem;
+            box-shadow: var(--shadow-light);
+        }
+
+        .star-rating {
+            display: flex;
+            gap: 5px;
+            margin: 1rem 0;
+            justify-content: center;
+        }
+
+        .star {
+            font-size: 2rem;
+            color: #d1d5db;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .star.active,
+        .star:hover {
+            color: #fbbf24;
+        }
+
+        .photo-upload {
+            margin: 1rem 0;
+        }
+
+        .photo-upload input[type="file"] {
+            display: none;
+        }
+
+        .photo-upload-btn {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: var(--gradient-primary);
+            color: white;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .photo-upload-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .review-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .review-card {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: var(--shadow-light);
+        }
+
+        .review-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .review-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--gradient-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        .review-stars {
+            color: #fbbf24;
+        }
+
+        /* Interactive Map */
+        .map-container {
+            height: 400px;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow-medium);
+            margin: 2rem 0;
+        }
+
+        /* Virtual Tour */
+        .virtual-tour {
+            background: var(--card-bg);
+            padding: 4rem;
+            border-radius: 25px;
+            margin: 4rem 0;
+            text-align: center;
+        }
+
+        .tour-viewer {
+            width: 100%;
+            height: 500px;
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+            background: #000;
+            margin: 2rem 0;
+        }
+
+        .tour-controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .tour-btn {
+            padding: 1rem 2rem;
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .tour-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Blog Section */
+        .blog-section {
+            padding: 6rem 4rem;
+        }
+
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 3rem;
+            margin-top: 3rem;
+        }
+
+        .blog-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow-medium);
+            transition: all 0.3s ease;
+        }
+
+        .blog-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .blog-image {
+            height: 250px;
+            overflow: hidden;
+        }
+
+        .blog-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .blog-card:hover .blog-image img {
+            transform: scale(1.1);
+        }
+
+        .blog-content {
+            padding: 2rem;
+        }
+
+        .blog-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        .blog-meta {
+            color: #6b7280;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .blog-excerpt {
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .read-more {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .read-more:hover {
+            color: var(--secondary-color);
+        }
+
+        /* Loading Screen */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+
+        .loading-content {
+            text-align: center;
+            color: white;
+        }
+
+        .loading-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            animation: pulse 2s infinite;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-top: 3px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        /* Scroll Progress Bar */
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 4px;
+            background: var(--gradient-secondary);
+            z-index: 1001;
+            transition: width 0.3s ease;
+        }
+
+        /* Header Styles */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(15px);
+            z-index: 1000;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-light);
+        }
+
+        [data-theme="dark"] header {
+            background: rgba(31, 41, 55, 0.95);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 8%;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .theme-toggle-nav {
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .theme-toggle-nav:hover {
+            transform: scale(1.1);
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 3rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 3px;
+            bottom: -8px;
+            left: 0;
+            background: var(--gradient-primary);
+            transition: width 0.3s ease;
+            border-radius: 2px;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .menu-toggle span {
+            width: 30px;
+            height: 3px;
+            background: var(--primary-color);
+            margin: 4px 0;
+            transition: 0.3s;
+            border-radius: 2px;
+        }
+
+        /* Hero Section */
+        #home {
+            height: 100vh;
+            background: url('https://images.unsplash.com/photo-1555244162-803834f70033?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #home::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.3);
+            z-index: 1;
+        }
+
+        .hero-particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .hero-content {
+            max-width: 1000px;
+            padding: 2rem;
+            animation: fadeInUp 1.5s ease;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-content h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 5rem;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            line-height: 1.2;
+        }
+
+        .hero-content p {
+            font-size: 1.5rem;
+            margin-bottom: 3rem;
+            opacity: 0.95;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1.2rem 3rem;
+            background: var(--gradient-secondary);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-medium);
+            transform: translateY(0);
+            border: none;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .cta-button:hover::before {
+            left: 100%;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-heavy);
+        }
+
+        .cta-button.secondary {
+            background: transparent;
+            border: 2px solid white;
+        }
+
+        /* Section Styles */
+        section {
+            padding: 8rem 8%;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.3rem;
+            margin-bottom: 4rem;
+            color: #6b7280;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* About Section */
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6rem;
+            align-items: center;
+            margin-top: 4rem;
+        }
+
+        .about-image {
+            position: relative;
+            border-radius: 25px;
+            overflow: hidden;
+            box-shadow: var(--shadow-heavy);
+        }
+
+        .about-image img {
+            width: 100%;
+            height: 500px;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .about-image:hover img {
+            transform: scale(1.1);
+        }
+
+        .about-text {
+            font-size: 1.2rem;
+            line-height: 1.8;
+        }
+
+        .about-text h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            color: var(--primary-color);
+        }
+
+        .about-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 3rem 2rem;
+            background: var(--gradient-primary);
+            color: white;
+            border-radius: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-10px);
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-weight: 500;
+            opacity: 0.9;
+        }
+
+        /* Menu Showcase Section */
+        .menu-showcase {
+            background: var(--card-bg);
+            border-radius: 30px;
+            padding: 6rem 4rem;
+            margin: 6rem 0;
+            border: 1px solid var(--border-color);
+        }
+
+        .menu-categories {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 4rem;
+            flex-wrap: wrap;
+        }
+
+        .menu-tab {
+            padding: 1rem 2rem;
+            background: white;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .menu-tab.active,
+        .menu-tab:hover {
+            background: var(--gradient-primary);
+            color: white;
+        }
+
+        .menu-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+        }
+
+        .menu-item {
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: var(--shadow-light);
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .menu-item:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .menu-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+        }
+
+        .menu-item h4 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        .menu-item p {
+            color: #6b7280;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .menu-price {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--secondary-color);
+        }
+
+        /* Gallery Section */
+        .gallery-filter {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 4rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 1rem 2rem;
+            background: transparent;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .filter-btn.active,
+        .filter-btn:hover {
+            background: var(--gradient-primary);
+            color: white;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .gallery-item {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow-medium);
+            transition: all 0.3s ease;
+            height: 300px;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: var(--shadow-heavy);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .gallery-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient-primary);
+            opacity: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 1.3rem;
+            transition: opacity 0.3s ease;
+        }
+
+        .gallery-item:hover .gallery-overlay {
+            opacity: 0.9;
+        }
+
+        .gallery-overlay i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Features Section */
+        .features-section {
+            background: transparent;
+            color: white;
+            border-radius: 30px;
+            padding: 8rem 6rem;
+            margin: 8rem 0;
+        }
+
+        .features-section .section-title {
+            color: var(--primary-color);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 4rem;
+            margin-top: 4rem;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            padding: 4rem 3rem;
+            border-radius: 25px;
+            text-align: center;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+                       background 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                       box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: var(--primary-color);
+            will-change: transform;
+            transform: translateZ(0);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-15px) translateZ(0);
+            background: rgba(255, 255, 255, 0.25);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+        }
+
+        .feature-icon {
+            font-size: 4rem;
+            margin-bottom: 2rem;
+            color: var(--secondary-color);
+        }
+
+        .feature-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-card h3,
+        .feature-card p {
+            color: var(--primary-color);
+        }
+
+        /* Services Section */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 3rem;
+            margin-top: 4rem;
+        }
+
+        .service-card {
+            background: white;
+            border-radius: 25px;
+            overflow: hidden;
+            box-shadow: var(--shadow-medium);
+            transition: all 0.3s ease;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-heavy);
+        }
+
+        .service-image {
+            height: 250px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .service-card:hover .service-image img {
+            transform: scale(1.1);
+        }
+
+        .service-content {
+            padding: 3rem;
+        }
+
+        .service-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        /* Testimonials Section */
+        .testimonials-section {
+            background: var(--light-color);
+            border-radius: 30px;
+            padding: 8rem 6rem;
+            margin: 8rem 0;
+        }
+
+        .testimonials-slider {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .testimonial {
+            text-align: center;
+            padding: 4rem;
+            display: none;
+        }
+
+        .testimonial.active {
+            display: block;
+            animation: fadeInUp 0.5s ease;
+        }
+
+        .testimonial-text {
+            font-size: 1.4rem;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+            font-style: italic;
+            color: var(--text-color);
+        }
+
+        .testimonial-author {
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .testimonial-role {
+            color: #6b7280;
+        }
+
+        .testimonial-nav {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 3rem;
+        }
+
+        .testimonial-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #d1d5db;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .testimonial-dot.active {
+            background: var(--primary-color);
+        }
+
+        /* Contact Section */
+        .contact-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6rem;
+            margin-top: 4rem;
+        }
+
+        .contact-info {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 4rem;
+            border-radius: 25px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 3rem;
+        }
+
+        .contact-item i {
+            font-size: 2rem;
+            margin-right: 2rem;
+            width: 50px;
+        }
+
+        .contact-form {
+            background: white;
+            padding: 4rem;
+            border-radius: 25px;
+            box-shadow: var(--shadow-medium);
+        }
+
+        .form-group {
+            margin-bottom: 2rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.8rem;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 1.2rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 15px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 1.5rem 2rem;
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark-color);
+            color: white;
+            text-align: center;
+            padding: 4rem 8%;
+            margin-top: 8rem;
+        }
+
+        .footer-content {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 4rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-section h4 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: var(--secondary-color);
+        }
+
+        .footer-section a {
+            color: #d1d5db;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section a:hover {
+            color: white;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 60px;
+            height: 60px;
+            background: var(--gradient-primary);
+            color: white;
+            border-radius: 50%;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 1.5rem;
+        }
+
+        .social-links a:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        /* Booking Modal */
+        .booking-modal {
+            display: none;
+            position: fixed;
+            z-index: 3000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8);
+            backdrop-filter: blur(5px);
+        }
+
+        .booking-content {
+            background: white;
+            margin: 3% auto;
+            padding: 4rem;
+            border-radius: 25px;
+            width: 90%;
+            max-width: 800px;
+            position: relative;
+            animation: fadeInUp 0.5s ease;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .booking-steps {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 3rem;
+        }
+
+        .step {
+            padding: 1rem 2rem;
+            background: #f3f4f6;
+            margin: 0 1rem;
+            border-radius: 50px;
+            font-weight: 600;
+        }
+
+        .step.active {
+            background: var(--gradient-primary);
+            color: white;
+        }
+
+        /* Price Calculator */
+        .price-calculator {
+            background: var(--light-color);
+            padding: 4rem;
+            border-radius: 25px;
+            margin: 4rem 0;
+        }
+
+        .calc-inputs {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .calc-result {
+            text-align: center;
+            padding: 3rem;
+            background: var(--gradient-primary);
+            color: white;
+            border-radius: 20px;
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-30px) rotate(180deg); }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px) translateZ(0);
+            transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+                       transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            will-change: opacity, transform;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0) translateZ(0);
+        }
+
+        /* Staggered animation for feature cards */
+        .features-grid .feature-card {
+            opacity: 1;
+            transform: translateY(0) translateZ(0);
+            transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+                       transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Animation states for intersection observer */
+        .features-grid:not(.animated) .feature-card {
+            opacity: 0;
+            transform: translateY(30px) translateZ(0);
+        }
+
+        .features-grid.animated .feature-card {
+            opacity: 1;
+            transform: translateY(0) translateZ(0);
+        }
+
+        .features-grid.animated .feature-card:nth-child(1) { transition-delay: 0.1s; }
+        .features-grid.animated .feature-card:nth-child(2) { transition-delay: 0.2s; }
+        .features-grid.animated .feature-card:nth-child(3) { transition-delay: 0.3s; }
+        .features-grid.animated .feature-card:nth-child(4) { transition-delay: 0.4s; }
+        .features-grid.animated .feature-card:nth-child(5) { transition-delay: 0.5s; }
+
+        .parallax {
+            transition: transform 0.1s ease-out;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            nav {
+                padding: 1.5rem 5%;
+            }
+            
+            section {
+                padding: 6rem 5%;
+            }
+            
+            .hero-content h1 {
+                font-size: 4rem;
+            }
+            
+            .section-title {
+                font-size: 3rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: white;
+                flex-direction: column;
+                padding: 2rem;
+                box-shadow: var(--shadow-medium);
+                gap: 1rem;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .menu-toggle {
+                display: flex;
+            }
+
+            .hero-content h1 {
+                font-size: 3rem;
+            }
+
+            .hero-content p {
+                font-size: 1.3rem;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .about-content,
+            .contact-container {
+                grid-template-columns: 1fr;
+                gap: 4rem;
+            }
+
+            .features-grid,
+            .services-grid,
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+
+            section {
+                padding: 4rem 5%;
+            }
+
+            .section-title {
+                font-size: 2.5rem;
+            }
+
+            .menu-categories,
+            .gallery-filter {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .features-section,
+            .testimonials-section,
+            .menu-showcase {
+                padding: 4rem 2rem;
+            }
+
+            .footer-links {
+                flex-direction: column;
+                gap: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-content">
+            <div class="loading-logo">Laiya Gourmet</div>
+            <div class="loading-spinner"></div>
+        </div>
+    </div>
+
+    <!-- Scroll Progress Bar -->
+    <div class="scroll-progress" id="scrollProgress"></div>
+
+    <!-- Header -->
+    <header>
+        <nav>
+            <div class="logo">Laiya Gourmet</div>
+            <div class="nav-right">
+                <ul class="nav-links">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#menu">Menu</a></li>
+                    <li><a href="#gallery">Gallery</a></li>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#reviews">Reviews</a></li>
+                    <li><a href="#blog">Blog</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+                <button class="theme-toggle-nav" id="themeToggleNav" title="Toggle Dark/Light Mode">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <div class="menu-toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Theme Toggle Button (Fixed Position) -->
+    <button class="theme-toggle" id="themeToggle" title="Toggle Dark/Light Mode">
+        <i class="fas fa-moon"></i>
+    </button>
+
+    <!-- Toast Notifications Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Live Chat Widget -->
+    <div class="chat-widget">
+        <button class="chat-toggle" id="chatToggle">
+            <i class="fas fa-comments"></i>
+        </button>
+        <div class="chat-window" id="chatWindow">
+            <div class="chat-header">
+                <h4>Live Support</h4>
+                <button onclick="toggleChat()" style="background: none; border: none; color: white; font-size: 1.2rem; cursor: pointer;">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="chat-messages" id="chatMessages">
+                <div class="chat-message bot">
+                    <i class="fas fa-robot" style="margin-right: 8px;"></i>
+                    Hello! I'm here to help you with your catering needs. How can I assist you today?
+                </div>
+            </div>
+            <div class="chat-input-container">
+                <input type="text" class="chat-input" id="chatInput" placeholder="Type your message...">
+                <button class="chat-send" id="chatSend">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Newsletter Popup -->
+    <div class="newsletter-popup" id="newsletterPopup">
+        <div class="newsletter-content">
+            <button class="newsletter-close" onclick="closeNewsletter()">
+                <i class="fas fa-times"></i>
+            </button>
+            <h3 class="newsletter-title">Stay Updated!</h3>
+            <p>Get the latest recipes, catering tips, and exclusive offers delivered to your inbox.</p>
+            <form class="newsletter-form" id="newsletterForm">
+                <input type="email" class="newsletter-input" placeholder="Enter your email" required>
+                <button type="submit" class="newsletter-submit">Subscribe</button>
+            </form>
+            <p style="font-size: 0.9rem; color: #6b7280; margin-top: 1rem;">
+                We respect your privacy. Unsubscribe at any time.
+            </p>
+        </div>
+    </div>
+
+    <!-- Home Section -->
+    <section id="home">
+        <div class="hero-particles" id="heroParticles"></div>
+        <div class="hero-content">
+            <h1>Laiya Gourmet</h1>
+            <p>Elevating Every Occasion with Exquisite Culinary Experiences</p>
+            <div class="cta-buttons">
+                <button class="cta-button" onclick="openBookingModal()">Book Now</button>
+                <a href="#menu" class="cta-button secondary">View Menu</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about">
+        <h2 class="section-title">About Us</h2>
+        <p class="section-subtitle">Crafting memorable experiences through exceptional cuisine and unparalleled service</p>
+        
+        <div class="about-content fade-in">
+            <div class="about-image">
+                <img src="https://i.ibb.co/20F4Mznv/acd21005-2a1e-45ca-88b2-78e4a8db597d-large.webp" alt="Professional chef preparing gourmet food">
+            </div>
+            <div>
+                <div class="about-text">
+                    <h3>Our Culinary Journey</h3>
+                    <p>Founded with a passion for culinary excellence, Laiya Gourmet has been transforming events into unforgettable experiences for over a decade. Our team of expert chefs and event specialists work tirelessly to bring your vision to life.</p>
+                    <p>From intimate gatherings to grand celebrations, we believe every event deserves the finest attention to detail and the most exquisite flavors. Our commitment to quality and innovation has made us the preferred choice for discerning clients.</p>
+                </div>
+                <div class="about-stats">
+                    <div class="stat-item">
+                        <span class="stat-number" data-count="1500">0</span>
+                        <span class="stat-label">Events Catered</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" data-count="15">0</span>
+                        <span class="stat-label">Years Experience</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" data-count="75">0</span>
+                        <span class="stat-label">Expert Chefs</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" data-count="98">0</span>
+                        <span class="stat-label">Satisfaction Rate</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Menu Showcase Section -->
+    <section id="menu">
+        <h2 class="section-title">Our Signature Menu</h2>
+        <p class="section-subtitle">Discover our carefully crafted dishes that will delight your taste buds</p>
+        
+        <!-- Advanced Search -->
+        <div class="search-container fade-in">
+            <input type="text" class="search-input" id="menuSearch" placeholder="Search menu items, ingredients, or dietary preferences...">
+            <i class="fas fa-search search-icon"></i>
+            <div class="search-results" id="searchResults"></div>
+        </div>
+        
+        <div class="menu-showcase fade-in">
+            <div class="menu-categories">
+                <button class="menu-tab active" data-category="appetizers">Appetizers</button>
+                <button class="menu-tab" data-category="mains">Main Courses</button>
+                <button class="menu-tab" data-category="desserts">Beautiful Cakes</button>
+                <button class="menu-tab" data-category="beverages">Beverages</button>
+            </div>
+            
+            <div class="menu-items" id="menuItems">
+                <!-- Appetizers -->
+                <div class="menu-item" data-category="appetizers">
+                    <img src="https://images.unsplash.com/photo-1551218808-94e220e084d2?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" alt="Gourmet canapés">
+                    <h4>Artisan Canapés</h4>
+                    <p>Delicate bite-sized appetizers featuring smoked salmon, caviar, and fresh herbs</p>
+                    <div class="menu-price">$12 per piece</div>
+                </div>
+                
+                <div class="menu-item" data-category="appetizers">
+                    <img src="https://images.unsplash.com/photo-1544025162-d76694265947?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" alt="Charcuterie board">
+                    <h4>Premium Charcuterie</h4>
+                    <p>Curated selection of artisanal cheeses, cured meats, and seasonal accompaniments</p>
+                    <div class="menu-price">$85 per board</div>
+                </div>
+
+                <!-- Main Courses -->
+                <div class="menu-item" data-category="mains" style="display: none;">
+                    <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" alt="Beef Wellington">
+                    <h4>Wagyu Beef Wellington</h4>
+                    <p>Premium wagyu beef wrapped in flaky pastry with mushroom duxelles and truffle sauce</p>
+                    <div class="menu-price">$150 per person</div>
+                </div>
+
+                <div class="menu-item" data-category="mains" style="display: none;">
+                    <img src="https://images.unsplash.com/photo-1467003909585-2f8a72700288?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" alt="Lobster thermidor">
+                    <h4>Lobster Thermidor</h4>
+                    <p>Fresh lobster in a rich, creamy sauce with Gruyère cheese and fine herbs</p>
+                    <div class="menu-price">$95 per person</div>
+                </div>
+
+                <div class="menu-item" data-category="mains" style="display: none;">
+                    <img src="https://images.unsplash.com/photo-1559847844-5315695dadae?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" alt="Herb crusted rack of lamb">
+                    <h4>Herb-Crusted Rack of Lamb</h4>
+                    <p>Succulent lamb with rosemary and thyme crust, served with seasonal vegetables</p>
+                    <div class="menu-price">$75 per person</div>
+                </div>
+
+                <!-- Beautiful Cakes -->
+                <div class="menu-item" data-category="desserts" style="display: none;">
+                    <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" alt="Wedding cake">
+                    <h4>Royal Wedding Cake</h4>
+                    <p>Multi-tier vanilla sponge with fresh berries and elegant white chocolate decorations</p>
+                    <div class="menu-price">$350 per tier</div>
+                </div>
+
+                <div class="menu-item" data-category="desserts" style="display: none;">
+                    <img src="https://images.unsplash.com/photo-1621303837174-89787a7d4729?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" alt="Chocolate cake">
+                    <h4>Decadent Chocolate Tower</h4>
+                    <p>Rich dark chocolate cake with ganache layers and gold leaf finishing</p>
+                    <div class="menu-price">$280 per cake</div>
+                </div>
+
+                <div class="menu-item" data-category="desserts" style="display: none;">
+                    <img src="https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" alt="Fruit tart">
+                    <h4>Artisan Fruit Tart</h4>
+                    <p>Handcrafted pastry with vanilla custard and seasonal fruit arrangements</p>
+                    <div class="menu-price">$65 per tart</div>
+                </div>
+
+                <!-- Beverages -->
+                <div class="menu-item" data-category="beverages" style="display: none;">
+                    <img src="https://images.unsplash.com/photo-1544145945-f90425340c7e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" alt="Signature cocktails">
+                    <h4>Signature Cocktails</h4>
+                    <p>Handcrafted cocktails featuring premium spirits and fresh ingredients</p>
+                    <div class="menu-price">$18 per drink</div>
+                </div>
+
+                <div class="menu-item" data-category="beverages" style="display: none;">
+                    <img src="https://images.unsplash.com/photo-1510972527921-ce03766a1cf1?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" alt="Wine selection">
+                    <h4>Curated Wine Selection</h4>
+                    <p>Premium wines from renowned vineyards around the world</p>
+                    <div class="menu-price">$45+ per bottle</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Price Calculator -->
+        <div class="price-calculator fade-in">
+            <h3 class="section-title" style="font-size: 2.5rem;">Event Price Calculator</h3>
+            <div class="calc-inputs">
+                <div class="form-group">
+                    <label>Number of Guests</label>
+                    <input type="number" id="guestCount" min="10" max="500" value="50">
+                </div>
+                <div class="form-group">
+                    <label>Service Type</label>
+                    <select id="serviceType">
+                        <option value="75">Premium Wedding ($75/person)</option>
+                        <option value="45">Corporate Event ($45/person)</option>
+                        <option value="55">Private Party ($55/person)</option>
+                        <option value="35">Cocktail Reception ($35/person)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Additional Services</label>
+                    <select id="additionalServices">
+                        <option value="0">None</option>
+                        <option value="500">DJ Service (+$500)</option>
+                        <option value="800">Full Event Planning (+$800)</option>
+                        <option value="300">Premium Linens (+$300)</option>
+                    </select>
+                </div>
+            </div>
+            <div class="calc-result" id="calcResult">
+                Estimated Total: $3,750
+            </div>
+        </div>
+
+        <!-- Interactive Menu Builder -->
+        <div class="menu-builder fade-in" style="background: var(--card-bg); padding: 4rem; border-radius: 25px; margin: 4rem 0; border: 1px solid var(--border-color);">
+            <h3 class="section-title" style="font-size: 2.5rem;">Custom Menu Builder</h3>
+            <p class="section-subtitle">Create your perfect menu with real-time pricing</p>
+            
+            <div class="builder-categories" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin: 3rem 0;">
+                <div class="builder-category">
+                    <h4 style="color: var(--primary-color); margin-bottom: 1rem;">Appetizers</h4>
+                    <div class="builder-items">
+                        <label class="builder-item" style="display: flex; align-items: center; gap: 10px; margin: 0.5rem 0; cursor: pointer;">
+                            <input type="checkbox" class="menu-item-checkbox" data-price="12" data-name="Artisan Canapés">
+                            <span>Artisan Canapés - $12/piece</span>
+                        </label>
+                        <label class="builder-item" style="display: flex; align-items: center; gap: 10px; margin: 0.5rem 0; cursor: pointer;">
+                            <input type="checkbox" class="menu-item-checkbox" data-price="85" data-name="Premium Charcuterie">
+                            <span>Premium Charcuterie - $85/board</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="builder-category">
+                    <h4 style="color: var(--primary-color); margin-bottom: 1rem;">Main Courses</h4>
+                    <div class="builder-items">
+                        <label class="builder-item" style="display: flex; align-items: center; gap: 10px; margin: 0.5rem 0; cursor: pointer;">
+                            <input type="checkbox" class="menu-item-checkbox" data-price="150" data-name="Wagyu Beef Wellington">
+                            <span>Wagyu Beef Wellington - $150/person</span>
+                        </label>
+                        <label class="builder-item" style="display: flex; align-items: center; gap: 10px; margin: 0.5rem 0; cursor: pointer;">
+                            <input type="checkbox" class="menu-item-checkbox" data-price="95" data-name="Lobster Thermidor">
+                            <span>Lobster Thermidor - $95/person</span>
+                        </label>
+                        <label class="builder-item" style="display: flex; align-items: center; gap: 10px; margin: 0.5rem 0; cursor: pointer;">
+                            <input type="checkbox" class="menu-item-checkbox" data-price="75" data-name="Herb-Crusted Rack of Lamb">
+                            <span>Herb-Crusted Rack of Lamb - $75/person</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="builder-category">
+                    <h4 style="color: var(--primary-color); margin-bottom: 1rem;">Desserts</h4>
+                    <div class="builder-items">
+                        <label class="builder-item" style="display: flex; align-items: center; gap: 10px; margin: 0.5rem 0; cursor: pointer;">
+                            <input type="checkbox" class="menu-item-checkbox" data-price="350" data-name="Royal Wedding Cake">
+                            <span>Royal Wedding Cake - $350/tier</span>
+                        </label>
+                        <label class="builder-item" style="display: flex; align-items: center; gap: 10px; margin: 0.5rem 0; cursor: pointer;">
+                            <input type="checkbox" class="menu-item-checkbox" data-price="280" data-name="Decadent Chocolate Tower">
+                            <span>Decadent Chocolate Tower - $280/cake</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="builder-category">
+                    <h4 style="color: var(--primary-color); margin-bottom: 1rem;">Beverages</h4>
+                    <div class="builder-items">
+                        <label class="builder-item" style="display: flex; align-items: center; gap: 10px; margin: 0.5rem 0; cursor: pointer;">
+                            <input type="checkbox" class="menu-item-checkbox" data-price="18" data-name="Signature Cocktails">
+                            <span>Signature Cocktails - $18/drink</span>
+                        </label>
+                        <label class="builder-item" style="display: flex; align-items: center; gap: 10px; margin: 0.5rem 0; cursor: pointer;">
+                            <input type="checkbox" class="menu-item-checkbox" data-price="45" data-name="Curated Wine Selection">
+                            <span>Curated Wine Selection - $45+/bottle</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="builder-summary" style="background: var(--gradient-primary); color: white; padding: 2rem; border-radius: 20px; text-align: center;">
+                <h4 style="margin-bottom: 1rem;">Your Custom Menu</h4>
+                <div id="selectedItems" style="margin-bottom: 1rem; min-height: 50px;">
+                    <p>Select items to build your custom menu</p>
+                </div>
+                <div class="builder-total" style="font-size: 1.5rem; font-weight: 700;">
+                    Total: $<span id="builderTotal">0</span>
+                </div>
+                <button class="cta-button" style="margin-top: 1rem; background: white; color: var(--primary-color);" onclick="saveCustomMenu()">
+                    Save Custom Menu
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery">
+        <h2 class="section-title">Our Gallery</h2>
+        <p class="section-subtitle">A visual feast showcasing our culinary artistry and event transformations</p>
+        
+        <div class="gallery-filter fade-in">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="weddings">Weddings</button>
+            <button class="filter-btn" data-filter="corporate">Corporate</button>
+            <button class="filter-btn" data-filter="food">Food</button>
+            <button class="filter-btn" data-filter="cakes">Cakes</button>
+        </div>
+        
+        <div class="gallery-grid fade-in" id="galleryGrid">
+            <div class="gallery-item" data-category="weddings">
+                <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" alt="Elegant wedding reception">
+                <div class="gallery-overlay">
+                    <div>
+                        <i class="fas fa-heart"></i><br>
+                        Elegant Wedding Reception
+                    </div>
+                </div>
+            </div>
+            
+            <div class="gallery-item" data-category="food">
+                <img src="https://images.unsplash.com/photo-1551218808-94e220e084d2?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" alt="Gourmet appetizers">
+                <div class="gallery-overlay">
+                    <div>
+                        <i class="fas fa-utensils"></i><br>
+                        Gourmet Appetizers
+                    </div>
+                </div>
+            </div>
+            
+            <div class="gallery-item" data-category="cakes">
+                <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" alt="Beautiful wedding cake">
+                <div class="gallery-overlay">
+                    <div>
+                        <i class="fas fa-birthday-cake"></i><br>
+                        Custom Wedding Cakes
+                    </div>
+                </div>
+            </div>
+            
+            <div class="gallery-item" data-category="corporate">
+                <img src="https://images.unsplash.com/photo-1571997478779-2adcbbe9ab2f?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" alt="Corporate lunch setup">
+                <div class="gallery-overlay">
+                    <div>
+                        <i class="fas fa-building"></i><br>
+                        Corporate Events
+                    </div>
+                </div>
+            </div>
+            
+            <div class="gallery-item" data-category="food">
+                <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" alt="Gourmet main course">
+                <div class="gallery-overlay">
+                    <div>
+                        <i class="fas fa-utensils"></i><br>
+                        Signature Main Courses
+                    </div>
+                </div>
+            </div>
+            
+            <div class="gallery-item" data-category="food">
+                <img src="https://images.unsplash.com/photo-1478145046317-39f10e56b5e9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" alt="Cocktail service">
+                <div class="gallery-overlay">
+                    <div>
+                        <i class="fas fa-cocktail"></i><br>
+                        Premium Cocktail Service
+                    </div>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="cakes">
+                <img src="https://images.unsplash.com/photo-1621303837174-89787a7d4729?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" alt="Chocolate layered cake">
+                <div class="gallery-overlay">
+                    <div>
+                        <i class="fas fa-birthday-cake"></i><br>
+                        Luxury Chocolate Cakes
+                    </div>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="food">
+                <img src="https://images.unsplash.com/photo-1467003909585-2f8a72700288?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" alt="Seafood platter">
+                <div class="gallery-overlay">
+                    <div>
+                        <i class="fas fa-utensils"></i><br>
+                        Fresh Seafood Selection
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Services Section -->
+    <section id="services">
+        <h2 class="section-title">Our Premium Services</h2>
+        <p class="section-subtitle">Comprehensive catering solutions for every occasion and celebration</p>
+        
+        <div class="services-grid fade-in">
+            <div class="service-card">
+                <div class="service-image">
+                    <img src="https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" alt="Wedding catering setup">
+                </div>
+                <div class="service-content">
+                    <h3 class="service-title">Wedding Catering</h3>
+                    <p>Make your special day even more memorable with our elegant wedding catering packages. From cocktail receptions to multi-course dinners, we'll create the perfect culinary experience for your celebration.</p>
+                    <button class="cta-button" onclick="openModal('wedding')">Learn More</button>
+                </div>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-image">
+                    <img src="https://images.unsplash.com/photo-1511578314322-379afb476865?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" alt="Corporate event catering">
+                </div>
+                <div class="service-content">
+                    <h3 class="service-title">Corporate Events</h3>
+                    <p>Professional catering services for business meetings, conferences, and corporate celebrations. We understand the importance of making a great impression on your clients and colleagues.</p>
+                    <button class="cta-button" onclick="openModal('corporate')">Learn More</button>
+                </div>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-image">
+                    <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" alt="Private party catering">
+                </div>
+                <div class="service-content">
+                    <h3 class="service-title">Private Parties</h3>
+                    <p>Intimate gatherings and private celebrations deserve special attention. Our personalized service ensures your guests enjoy exceptional food in a warm, welcoming atmosphere.</p>
+                    <button class="cta-button" onclick="openModal('private')">Learn More</button>
+                </div>
+            </div>
+
+            <div class="service-card">
+                <div class="service-image">
+                    <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" alt="Outdoor catering">
+                </div>
+                <div class="service-content">
+                    <h3 class="service-title">Outdoor Events</h3>
+                    <p>Specialized outdoor catering for garden parties, beach events, and festival gatherings. We bring restaurant-quality food to any outdoor venue.</p>
+                    <button class="cta-button" onclick="openModal('outdoor')">Learn More</button>
+                </div>
+            </div>
+
+            <div class="service-card">
+                <div class="service-image">
+                    <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" alt="Fine dining service">
+                </div>
+                <div class="service-content">
+                    <h3 class="service-title">Fine Dining Experience</h3>
+                    <p>Michelin-star quality dining experiences with personal chefs, sommelier service, and white-glove presentation for the most distinguished events.</p>
+                    <button class="cta-button" onclick="openModal('finedining')">Learn More</button>
+                </div>
+            </div>
+
+            <div class="service-card">
+                <div class="service-image">
+                    <img src="https://images.unsplash.com/photo-1551218808-94e220e084d2?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" alt="Cocktail reception">
+                </div>
+                <div class="service-content">
+                    <h3 class="service-title">Cocktail Receptions</h3>
+                    <p>Sophisticated cocktail parties with premium bar service, artisanal hors d'oeuvres, and professional mixologists creating signature drinks for your guests.</p>
+                    <button class="cta-button" onclick="openModal('cocktail')">Learn More</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <div class="testimonials-section fade-in" id="testimonials">
+        <div style="max-width: 1600px; margin: 0 auto;">
+            <h2 class="section-title">What Our Clients Say</h2>
+            <p class="section-subtitle">Hear from our satisfied customers about their exceptional experiences</p>
+            
+            <div class="testimonials-slider">
+                <div class="testimonial active">
+                    <div class="testimonial-text">"Laiya Gourmet made our wedding absolutely perfect! The food was exceptional, and the service was flawless. Our guests are still talking about how amazing everything was."</div>
+                    <div class="testimonial-author">Sarah & Michael Johnson</div>
+                    <div class="testimonial-role">Wedding Clients</div>
+                </div>
+                
+                <div class="testimonial">
+                    <div class="testimonial-text">"Professional, reliable, and delicious! They catered our corporate gala for 300 people, and everything went smoothly. The presentation was stunning and the food was restaurant-quality."</div>
+                    <div class="testimonial-author">David Chen</div>
+                    <div class="testimonial-role">CEO, Tech Innovations Inc.</div>
+                </div>
+                
+                <div class="testimonial">
+                    <div class="testimonial-text">"From the initial consultation to the final cleanup, Laiya Gourmet exceeded our expectations. They turned our backyard party into a five-star dining experience."</div>
+                    <div class="testimonial-author">Maria Rodriguez</div>
+                    <div class="testimonial-role">Private Event Host</div>
+                </div>
+            </div>
+            
+            <div class="testimonial-nav">
+                <div class="testimonial-dot active" data-slide="0"></div>
+                <div class="testimonial-dot" data-slide="1"></div>
+                <div class="testimonial-dot" data-slide="2"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- User Review System -->
+    <section id="reviews">
+        <div class="review-section fade-in">
+            <div style="max-width: 1600px; margin: 0 auto;">
+                <h2 class="section-title">Customer Reviews</h2>
+                <p class="section-subtitle">Share your experience and read what others have to say</p>
+                
+                <!-- Review Form -->
+                <div class="review-form">
+                    <h3 style="font-family: 'Playfair Display', serif; color: var(--primary-color); margin-bottom: 2rem; text-align: center;">Leave a Review</h3>
+                    <form id="reviewForm">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                            <div class="form-group">
+                                <label>Your Name</label>
+                                <input type="text" id="reviewName" required style="width: 100%; padding: 1rem; border: 2px solid var(--border-color); border-radius: 15px; background: var(--bg-color); color: var(--text-color);">
+                            </div>
+                            <div class="form-group">
+                                <label>Event Type</label>
+                                <select id="reviewEventType" style="width: 100%; padding: 1rem; border: 2px solid var(--border-color); border-radius: 15px; background: var(--bg-color); color: var(--text-color);">
+                                    <option value="wedding">Wedding</option>
+                                    <option value="corporate">Corporate Event</option>
+                                    <option value="private">Private Party</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label style="display: block; margin-bottom: 0.5rem; text-align: center;">Rating</label>
+                            <div class="star-rating" id="starRating">
+                                <i class="fas fa-star star" data-rating="1"></i>
+                                <i class="fas fa-star star" data-rating="2"></i>
+                                <i class="fas fa-star star" data-rating="3"></i>
+                                <i class="fas fa-star star" data-rating="4"></i>
+                                <i class="fas fa-star star" data-rating="5"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Your Review</label>
+                            <textarea id="reviewText" rows="4" required style="width: 100%; padding: 1rem; border: 2px solid var(--border-color); border-radius: 15px; background: var(--bg-color); color: var(--text-color);" placeholder="Tell us about your experience..."></textarea>
+                        </div>
+                        
+                        <div class="photo-upload">
+                            <label for="reviewPhotos" class="photo-upload-btn">
+                                <i class="fas fa-camera" style="margin-right: 8px;"></i>
+                                Upload Photos
+                            </label>
+                            <input type="file" id="reviewPhotos" multiple accept="image/*">
+                            <div id="photoPreview" style="display: flex; gap: 10px; margin-top: 1rem; flex-wrap: wrap;"></div>
+                        </div>
+                        
+                        <button type="submit" class="submit-btn" style="width: 100%; margin-top: 1rem;">Submit Review</button>
+                    </form>
+                </div>
+                
+                <!-- Reviews Display -->
+                <div class="review-grid" id="reviewsGrid">
+                    <!-- Sample Reviews -->
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div class="review-avatar">SJ</div>
+                            <div>
+                                <h4>Sarah Johnson</h4>
+                                <div class="review-stars">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <small style="color: #6b7280;">Wedding • 2 weeks ago</small>
+                            </div>
+                        </div>
+                        <p>"Absolutely phenomenal service! The food was incredible and the presentation was stunning. Our guests are still talking about the amazing canapés and the beautiful wedding cake. Highly recommend!"</p>
+                    </div>
+                    
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div class="review-avatar">DC</div>
+                            <div>
+                                <h4>David Chen</h4>
+                                <div class="review-stars">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <small style="color: #6b7280;">Corporate Event • 1 month ago</small>
+                            </div>
+                        </div>
+                        <p>"Professional, reliable, and delicious! They catered our corporate gala for 300 people. Everything was perfect from start to finish. The team was incredibly organized and the food quality was restaurant-level."</p>
+                    </div>
+                    
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div class="review-avatar">MR</div>
+                            <div>
+                                <h4>Maria Rodriguez</h4>
+                                <div class="review-stars">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <small style="color: #6b7280;">Private Party • 3 weeks ago</small>
+                            </div>
+                        </div>
+                        <p>"Exceeded all expectations! The custom menu they created for our anniversary party was perfect. The lobster thermidor was to die for, and the service was impeccable. Will definitely book again!"</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact">
+        <h2 class="section-title">Contact Us</h2>
+        <p class="section-subtitle">Ready to start planning your perfect event? Get in touch with us today</p>
+        
+        <!-- Interactive Service Area Map -->
+        <div class="fade-in" style="margin: 4rem 0;">
+            <h3 style="font-family: 'Playfair Display', serif; font-size: 2rem; text-align: center; margin-bottom: 2rem; color: var(--primary-color);">Our Service Areas</h3>
+            <div class="map-container" id="serviceMap"></div>
+            <p style="text-align: center; margin-top: 1rem; color: #6b7280;">
+                We proudly serve the greater metropolitan area. Contact us for locations outside our standard service area.
+            </p>
+        </div>
+
+        <!-- Virtual Kitchen Tour -->
+        <div class="virtual-tour fade-in">
+            <h3 style="font-family: 'Playfair Display', serif; font-size: 2rem; margin-bottom: 2rem; color: var(--primary-color);">Virtual Kitchen Tour</h3>
+            <p style="margin-bottom: 2rem; font-size: 1.1rem;">Take a 360° tour of our state-of-the-art kitchen facilities and see where the magic happens!</p>
+            
+            <div class="tour-viewer" id="tourViewer">
+                <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" alt="Professional Kitchen" style="width: 100%; height: 100%; object-fit: cover; border-radius: 20px;">
+                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; color: white;">
+                    <i class="fas fa-play-circle" style="font-size: 4rem; margin-bottom: 1rem; cursor: pointer;" onclick="startVirtualTour()"></i>
+                    <p style="font-size: 1.2rem; font-weight: 600;">Click to Start Virtual Tour</p>
+                </div>
+            </div>
+            
+            <div class="tour-controls">
+                <button class="tour-btn" onclick="tourSection('prep')">
+                    <i class="fas fa-utensils" style="margin-right: 8px;"></i>
+                    Prep Area
+                </button>
+                <button class="tour-btn" onclick="tourSection('cooking')">
+                    <i class="fas fa-fire" style="margin-right: 8px;"></i>
+                    Cooking Stations
+                </button>
+                <button class="tour-btn" onclick="tourSection('pastry')">
+                    <i class="fas fa-birthday-cake" style="margin-right: 8px;"></i>
+                    Pastry Kitchen
+                </button>
+                <button class="tour-btn" onclick="tourSection('storage')">
+                    <i class="fas fa-warehouse" style="margin-right: 8px;"></i>
+                    Storage Areas
+                </button>
+            </div>
+        </div>
+
+        <div class="contact-container fade-in">
+            <div class="contact-info">
+                <h3 style="font-family: 'Playfair Display', serif; font-size: 2rem; margin-bottom: 2rem;">Get in Touch</h3>
+                <div class="contact-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <div>
+                        <strong>Address</strong><br>
+                        123 Gourmet Boulevard<br>
+                        Culinary District, CD 12345
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-phone"></i>
+                    <div>
+                        <strong>Phone</strong><br>
+                        +1 (555) 123-GOURMET<br>
+                        +1 (555) 123-4687
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    <div>
+                        <strong>Email</strong><br>
+                        hello@laiyagourmet.com<br>
+                        events@laiyagourmet.com
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-clock"></i>
+                    <div>
+                        <strong>Business Hours</strong><br>
+                        Mon-Fri: 9:00 AM - 7:00 PM<br>
+                        Sat-Sun: 10:00 AM - 5:00 PM
+                    </div>
+                </div>
+                
+                <!-- Social Media Integration -->
+                <div class="contact-item" style="flex-direction: column; align-items: flex-start;">
+                    <strong style="margin-bottom: 1rem;">Follow Us</strong>
+                    <div style="display: flex; gap: 1rem;">
+                        <a href="#" style="color: white; font-size: 1.5rem; transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)'">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" style="color: white; font-size: 1.5rem; transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)'">
+                            <i class="fab fa-facebook"></i>
+                        </a>
+                        <a href="#" style="color: white; font-size: 1.5rem; transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)'">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" style="color: white; font-size: 1.5rem; transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)'">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <form class="contact-form" id="contactForm">
+                <h3 style="font-family: 'Playfair Display', serif; font-size: 2rem; margin-bottom: 2rem;">Send us a Message</h3>
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" name="phone">
+                </div>
+                <div class="form-group">
+                    <label for="event">Event Type</label>
+                    <select id="event" name="event">
+                        <option value="">Select Event Type</option>
+                        <option value="wedding">Wedding</option>
+                        <option value="corporate">Corporate Event</option>
+                        <option value="private">Private Party</option>
+                        <option value="outdoor">Outdoor Event</option>
+                        <option value="cocktail">Cocktail Reception</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="eventDate">Preferred Event Date</label>
+                    <input type="date" id="eventDate" name="eventDate">
+                </div>
+                <div class="form-group">
+                    <label for="guests">Number of Guests</label>
+                    <input type="number" id="guests" name="guests" min="10" max="1000">
+                </div>
+                <div class="form-group">
+                    <label for="message">Message</label>
+                    <textarea id="message" name="message" rows="4" required></textarea>
+                </div>
+                <button type="submit" class="submit-btn">Send Message</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Blog Section -->
+    <section id="blog">
+        <div class="blog-section fade-in">
+            <div style="max-width: 1600px; margin: 0 auto;">
+                <h2 class="section-title">Recipe Blog & Tips</h2>
+                <p class="section-subtitle">Discover culinary secrets, recipes, and catering insights from our expert chefs</p>
+                
+                <!-- Blog Search -->
+                <div class="search-container" style="margin: 3rem auto;">
+                    <input type="text" class="search-input" id="blogSearch" placeholder="Search recipes, tips, or ingredients...">
+                    <i class="fas fa-search search-icon"></i>
+                    <div class="search-results" id="blogSearchResults"></div>
+                </div>
+                
+                <!-- Blog Categories -->
+                <div style="display: flex; justify-content: center; gap: 1rem; margin: 3rem 0; flex-wrap: wrap;">
+                    <button class="menu-tab active" data-blog-category="all" style="background: var(--gradient-primary); color: white;">All Posts</button>
+                    <button class="menu-tab" data-blog-category="recipes" style="background: var(--card-bg); color: var(--text-color); border: 2px solid var(--border-color);">Recipes</button>
+                    <button class="menu-tab" data-blog-category="tips" style="background: var(--card-bg); color: var(--text-color); border: 2px solid var(--border-color);">Catering Tips</button>
+                    <button class="menu-tab" data-blog-category="events" style="background: var(--card-bg); color: var(--text-color); border: 2px solid var(--border-color);">Event Planning</button>
+                    <button class="menu-tab" data-blog-category="seasonal" style="background: var(--card-bg); color: var(--text-color); border: 2px solid var(--border-color);">Seasonal</button>
+                </div>
+                
+                <!-- Blog Grid -->
+                <div class="blog-grid" id="blogGrid">
+                    <article class="blog-card" data-category="recipes">
+                        <div class="blog-image">
+                            <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Gourmet Pizza">
+                        </div>
+                        <div class="blog-content">
+                            <div class="blog-meta">
+                                <span><i class="fas fa-calendar"></i> March 15, 2024</span>
+                                <span><i class="fas fa-user"></i> Chef Maria</span>
+                                <span><i class="fas fa-tag"></i> Recipes</span>
+                            </div>
+                            <h3 class="blog-title">Artisan Pizza: From Dough to Perfection</h3>
+                            <p class="blog-excerpt">Learn the secrets behind our signature wood-fired pizzas, from creating the perfect dough to selecting premium toppings that will wow your guests.</p>
+                            <a href="#" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </article>
+                    
+                    <article class="blog-card" data-category="tips">
+                        <div class="blog-image">
+                            <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Event Planning">
+                        </div>
+                        <div class="blog-content">
+                            <div class="blog-meta">
+                                <span><i class="fas fa-calendar"></i> March 12, 2024</span>
+                                <span><i class="fas fa-user"></i> Chef David</span>
+                                <span><i class="fas fa-tag"></i> Tips</span>
+                            </div>
+                            <h3 class="blog-title">10 Essential Catering Tips for Large Events</h3>
+                            <p class="blog-excerpt">Planning a large event? Our expert tips will help you navigate the complexities of catering for 100+ guests while maintaining quality and efficiency.</p>
+                            <a href="#" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </article>
+                    
+                    <article class="blog-card" data-category="seasonal">
+                        <div class="blog-image">
+                            <img src="https://images.unsplash.com/photo-1571997478779-2adcbbe9ab2f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Spring Menu">
+                        </div>
+                        <div class="blog-content">
+                            <div class="blog-meta">
+                                <span><i class="fas fa-calendar"></i> March 10, 2024</span>
+                                <span><i class="fas fa-user"></i> Chef Sarah</span>
+                                <span><i class="fas fa-tag"></i> Seasonal</span>
+                            </div>
+                            <h3 class="blog-title">Spring Menu Inspirations: Fresh & Vibrant</h3>
+                            <p class="blog-excerpt">Embrace the season with our spring menu featuring fresh herbs, seasonal vegetables, and light, refreshing dishes perfect for outdoor events.</p>
+                            <a href="#" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </article>
+                    
+                    <article class="blog-card" data-category="events">
+                        <div class="blog-image">
+                            <img src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Wedding Planning">
+                        </div>
+                        <div class="blog-content">
+                            <div class="blog-meta">
+                                <span><i class="fas fa-calendar"></i> March 8, 2024</span>
+                                <span><i class="fas fa-user"></i> Event Coordinator Lisa</span>
+                                <span><i class="fas fa-tag"></i> Events</span>
+                            </div>
+                            <h3 class="blog-title">Wedding Catering: Creating Unforgettable Moments</h3>
+                            <p class="blog-excerpt">Your wedding day deserves perfection. Discover how to choose the right menu, accommodate dietary restrictions, and create magical dining experiences.</p>
+                            <a href="#" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </article>
+                    
+                    <article class="blog-card" data-category="recipes">
+                        <div class="blog-image">
+                            <img src="https://images.unsplash.com/photo-1551218808-94e220e084d2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Dessert Masterclass">
+                        </div>
+                        <div class="blog-content">
+                            <div class="blog-meta">
+                                <span><i class="fas fa-calendar"></i> March 5, 2024</span>
+                                <span><i class="fas fa-user"></i> Pastry Chef Anna</span>
+                                <span><i class="fas fa-tag"></i> Recipes</span>
+                            </div>
+                            <h3 class="blog-title">Dessert Masterclass: Chocolate Soufflé Secrets</h3>
+                            <p class="blog-excerpt">Master the art of the perfect chocolate soufflé with our step-by-step guide. Impress your guests with this classic French dessert.</p>
+                            <a href="#" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </article>
+                    
+                    <article class="blog-card" data-category="tips">
+                        <div class="blog-image">
+                            <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Kitchen Management">
+                        </div>
+                        <div class="blog-content">
+                            <div class="blog-meta">
+                                <span><i class="fas fa-calendar"></i> March 3, 2024</span>
+                                <span><i class="fas fa-user"></i> Chef Michael</span>
+                                <span><i class="fas fa-tag"></i> Tips</span>
+                            </div>
+                            <h3 class="blog-title">Kitchen Efficiency: Time Management for Caterers</h3>
+                            <p class="blog-excerpt">Learn professional kitchen management techniques that ensure smooth operations during high-pressure catering events.</p>
+                            <a href="#" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </article>
+                </div>
+                
+                <!-- Load More Button -->
+                <div style="text-align: center; margin-top: 3rem;">
+                    <button class="cta-button" onclick="loadMoreBlogPosts()">
+                        Load More Posts
+                        <i class="fas fa-chevron-down" style="margin-left: 8px;"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-links">
+                <div class="footer-section">
+                    <h4>Services</h4>
+                    <a href="#services">Wedding Catering</a><br>
+                    <a href="#services">Corporate Events</a><br>
+                    <a href="#services">Private Parties</a><br>
+                    <a href="#services">Fine Dining</a>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <a href="#about">About Us</a><br>
+                    <a href="#menu">Our Menu</a><br>
+                    <a href="#gallery">Gallery</a><br>
+                    <a href="#contact">Contact</a>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact Info</h4>
+                    <span style="color: #d1d5db;">123 Gourmet Boulevard</span><br>
+                    <span style="color: #d1d5db;">+1 (555) 123-GOURMET</span><br>
+                    <span style="color: #d1d5db;">hello@laiyagourmet.com</span>
+                </div>
+            </div>
+            
+            <div class="social-links">
+                <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+            </div>
+            
+            <p style="margin-top: 2rem; padding-top: 2rem; border-top: 1px solid #374151;">&copy; 2024 Laiya Gourmet. All rights reserved. | Crafted with ❤️ for exceptional events</p>
+        </div>
+    </footer>
+
+    <!-- Booking Modal -->
+    <div id="bookingModal" class="booking-modal">
+        <div class="booking-content">
+            <span class="close" onclick="closeBookingModal()">&times;</span>
+            <h2 style="font-family: 'Playfair Display', serif; color: var(--primary-color); margin-bottom: 2rem;">Book Your Event</h2>
+            
+            <div class="booking-steps">
+                <div class="step active">Step 1: Details</div>
+                <div class="step">Step 2: Menu</div>
+                <div class="step">Step 3: Confirmation</div>
+            </div>
+            
+            <form id="bookingForm">
+                <div class="form-group">
+                    <label>Event Type</label>
+                    <select required>
+                        <option value="">Select Event Type</option>
+                        <option value="wedding">Wedding</option>
+                        <option value="corporate">Corporate Event</option>
+                        <option value="private">Private Party</option>
+                        <option value="outdoor">Outdoor Event</option>
+                        <option value="cocktail">Cocktail Reception</option>
+                        <option value="finedining">Fine Dining Experience</option>
+                    </select>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                        <label>Event Date</label>
+                        <input type="date" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Guest Count</label>
+                        <input type="number" min="10" max="1000" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Special Requirements</label>
+                    <textarea rows="3" placeholder="Dietary restrictions, special requests, etc."></textarea>
+                </div>
+                
+                <button type="submit" class="submit-btn">Continue to Menu Selection</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Service Modals -->
+    <div id="weddingModal" class="booking-modal">
+        <div class="booking-content">
+            <span class="close" onclick="closeModal('weddingModal')">&times;</span>
+            <h2 style="font-family: 'Playfair Display', serif; color: var(--primary-color);">Wedding Catering</h2>
+            <img src="https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Wedding catering" style="width: 100%; height: 250px; object-fit: cover; border-radius: 15px; margin: 2rem 0;">
+            <p>Our wedding catering service includes:</p>
+            <ul style="margin: 2rem 0; line-height: 2;">
+                <li>Customized menu planning consultation</li>
+                <li>Elegant presentation and service</li>
+                <li>Professional wait staff</li>
+                <li>Complete setup and cleanup</li>
+                <li>Dietary accommodations</li>
+                <li>Cake cutting service</li>
+                <li>Complimentary tasting session</li>
+                <li>Wedding coordinator on-site</li>
+            </ul>
+            <p style="font-size: 1.2rem; font-weight: 600; color: var(--secondary-color);">Starting from $75 per person</p>
+            <button class="cta-button" onclick="openBookingModal()">Book Now</button>
+        </div>
+    </div>
+
+    <div id="corporateModal" class="booking-modal">
+        <div class="booking-content">
+            <span class="close" onclick="closeModal('corporateModal')">&times;</span>
+            <h2 style="font-family: 'Playfair Display', serif; color: var(--primary-color);">Corporate Events</h2>
+            <img src="https://images.unsplash.com/photo-1511578314322-379afb476865?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Corporate catering" style="width: 100%; height: 250px; object-fit: cover; border-radius: 15px; margin: 2rem 0;">
+            <p>Our corporate catering service includes:</p>
+            <ul style="margin: 2rem 0; line-height: 2;">
+                <li>Business breakfast and lunch options</li>
+                <li>Conference and meeting catering</li>
+                <li>Professional presentation</li>
+                <li>Flexible scheduling</li>
+                <li>Dietary restrictions accommodation</li>
+                <li>Equipment rental available</li>
+                <li>On-time delivery guarantee</li>
+                <li>Volume discounts available</li>
+            </ul>
+            <p style="font-size: 1.2rem; font-weight: 600; color: var(--secondary-color);">Starting from $45 per person</p>
+            <button class="cta-button" onclick="openBookingModal()">Book Now</button>
+        </div>
+    </div>
+
+    <div id="privateModal" class="booking-modal">
+        <div class="booking-content">
+            <span class="close" onclick="closeModal('privateModal')">&times;</span>
+            <h2 style="font-family: 'Playfair Display', serif; color: var(--primary-color);">Private Parties</h2>
+            <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Private party catering" style="width: 100%; height: 250px; object-fit: cover; border-radius: 15px; margin: 2rem 0;">
+            <p>Our private party catering service includes:</p>
+            <ul style="margin: 2rem 0; line-height: 2;">
+                <li>Personalized menu design</li>
+                <li>Intimate service style</li>
+                <li>Flexible serving options</li>
+                <li>Special occasion cakes</li>
+                <li>Themed decorations available</li>
+                <li>Entertainment coordination</li>
+                <li>Custom cocktail creation</li>
+                <li>Photography assistance</li>
+            </ul>
+            <p style="font-size: 1.2rem; font-weight: 600; color: var(--secondary-color);">Starting from $55 per person</p>
+            <button class="cta-button" onclick="openBookingModal()">Book Now</button>
+        </div>
+    </div>
+
+    <div id="outdoorModal" class="booking-modal">
+        <div class="booking-content">
+            <span class="close" onclick="closeModal('outdoorModal')">&times;</span>
+            <h2 style="font-family: 'Playfair Display', serif; color: var(--primary-color);">Outdoor Events</h2>
+            <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Outdoor catering" style="width: 100%; height: 250px; object-fit: cover; border-radius: 15px; margin: 2rem 0;">
+            <p>Our outdoor catering service includes:</p>
+            <ul style="margin: 2rem 0; line-height: 2;">
+                <li>Weather-resistant setup</li>
+                <li>Portable kitchen equipment</li>
+                <li>Generator and power solutions</li>
+                <li>Temperature-controlled food service</li>
+                <li>Tent and shelter coordination</li>
+                <li>Sanitation stations</li>
+                <li>Eco-friendly packaging options</li>
+                <li>Site inspection and planning</li>
+            </ul>
+            <p style="font-size: 1.2rem; font-weight: 600; color: var(--secondary-color);">Starting from $65 per person</p>
+            <button class="cta-button" onclick="openBookingModal()">Book Now</button>
+        </div>
+    </div>
+
+    <div id="finediningModal" class="booking-modal">
+        <div class="booking-content">
+            <span class="close" onclick="closeModal('finediningModal')">&times;</span>
+            <h2 style="font-family: 'Playfair Display', serif; color: var(--primary-color);">Fine Dining Experience</h2>
+            <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Fine dining" style="width: 100%; height: 250px; object-fit: cover; border-radius: 15px; margin: 2rem 0;">
+            <p>Our fine dining service includes:</p>
+            <ul style="margin: 2rem 0; line-height: 2;">
+                <li>Michelin-trained personal chefs</li>
+                <li>Multi-course tasting menus</li>
+                <li>Wine pairing with sommelier</li>
+                <li>Premium imported ingredients</li>
+                <li>White-glove table service</li>
+                <li>Custom dinnerware and linens</li>
+                <li>Molecular gastronomy options</li>
+                <li>Chef's table experience</li>
+            </ul>
+            <p style="font-size: 1.2rem; font-weight: 600; color: var(--secondary-color);">Starting from $150 per person</p>
+            <button class="cta-button" onclick="openBookingModal()">Book Now</button>
+        </div>
+    </div>
+
+    <div id="cocktailModal" class="booking-modal">
+        <div class="booking-content">
+            <span class="close" onclick="closeModal('cocktailModal')">&times;</span>
+            <h2 style="font-family: 'Playfair Display', serif; color: var(--primary-color);">Cocktail Receptions</h2>
+            <img src="https://images.unsplash.com/photo-1551218808-94e220e084d2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Cocktail reception" style="width: 100%; height: 250px; object-fit: cover; border-radius: 15px; margin: 2rem 0;">
+            <p>Our cocktail reception service includes:</p>
+            <ul style="margin: 2rem 0; line-height: 2;">
+                <li>Professional mixologists</li>
+                <li>Premium spirits and wines</li>
+                <li>Signature cocktail creation</li>
+                <li>Artisanal hors d'oeuvres</li>
+                <li>Elegant bar setup</li>
+                <li>Passed appetizer service</li>
+                <li>Non-alcoholic specialty drinks</li>
+                <li>Late-night snack options</li>
+            </ul>
+            <p style="font-size: 1.2rem; font-weight: 600; color: var(--secondary-color);">Starting from $35 per person</p>
+            <button class="cta-button" onclick="openBookingModal()">Book Now</button>
+        </div>
+    </div>
+
+    <script>
+        // Loading screen
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('loadingScreen').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('loadingScreen').style.display = 'none';
+                }, 500);
+            }, 1500);
+        });
+
+        // Scroll progress bar
+        window.addEventListener('scroll', () => {
+            const scrollProgress = document.getElementById('scrollProgress');
+            const scrollPercent = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+            scrollProgress.style.width = scrollPercent + '%';
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Mobile menu toggle
+        const menuToggle = document.querySelector('.menu-toggle');
+        const navLinks = document.querySelector('.nav-links');
+
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+
+        // Header scroll effect
+        window.addEventListener('scroll', () => {
+            updateHeaderBackground();
+        });
+
+        // Create hero particles
+        function createHeroParticles() {
+            const heroParticles = document.getElementById('heroParticles');
+            for (let i = 0; i < 30; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.width = (Math.random() * 10 + 5) + 'px';
+                particle.style.height = particle.style.width;
+                particle.style.animationDelay = Math.random() * 6 + 's';
+                particle.style.animationDuration = (Math.random() * 3 + 4) + 's';
+                heroParticles.appendChild(particle);
+            }
+        }
+
+        // Animated counters
+        function animateCounters() {
+            const counters = document.querySelectorAll('.stat-number');
+            counters.forEach(counter => {
+                const target = parseInt(counter.getAttribute('data-count'));
+                const duration = 2000;
+                const increment = target / (duration / 16);
+                let current = 0;
+
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= target) {
+                        counter.textContent = target + (target === 98 ? '%' : '+');
+                        clearInterval(timer);
+                    } else {
+                        counter.textContent = Math.floor(current) + (target === 98 ? '%' : '');
+                    }
+                }, 16);
+            });
+        }
+
+        // Menu tab functionality
+        const menuTabs = document.querySelectorAll('.menu-tab');
+        const menuItems = document.querySelectorAll('.menu-item');
+
+        menuTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const category = tab.getAttribute('data-category');
+                
+                // Update active tab
+                menuTabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                
+                // Show/hide menu items
+                menuItems.forEach(item => {
+                    if (item.getAttribute('data-category') === category) {
+                        item.style.display = 'block';
+                        item.style.animation = 'fadeInUp 0.5s ease forwards';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        // Gallery filter functionality
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const galleryItems = document.querySelectorAll('.gallery-item');
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const filter = btn.getAttribute('data-filter');
+                
+                // Update active filter
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                
+                // Filter gallery items
+                galleryItems.forEach(item => {
+                    if (filter === 'all' || item.getAttribute('data-category') === filter) {
+                        item.style.display = 'block';
+                        item.style.animation = 'fadeInUp 0.5s ease forwards';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        // Price calculator
+        function updatePrice() {
+            const guests = document.getElementById('guestCount').value;
+            const serviceType = document.getElementById('serviceType').value;
+            const additional = document.getElementById('additionalServices').value;
+            
+            const basePrice = guests * serviceType;
+            const totalPrice = basePrice + parseInt(additional);
+            
+            document.getElementById('calcResult').textContent = `Estimated Total: $${totalPrice.toLocaleString()}`;
+        }
+
+        document.getElementById('guestCount').addEventListener('input', updatePrice);
+        document.getElementById('serviceType').addEventListener('change', updatePrice);
+        document.getElementById('additionalServices').addEventListener('change', updatePrice);
+
+        // Testimonials slider
+        let currentTestimonial = 0;
+        const testimonials = document.querySelectorAll('.testimonial');
+        const testimonialDots = document.querySelectorAll('.testimonial-dot');
+
+        function showTestimonial(index) {
+            testimonials.forEach(t => t.classList.remove('active'));
+            testimonialDots.forEach(d => d.classList.remove('active'));
+            
+            testimonials[index].classList.add('active');
+            testimonialDots[index].classList.add('active');
+        }
+
+        testimonialDots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                currentTestimonial = index;
+                showTestimonial(index);
+            });
+        });
+
+        // Auto-advance testimonials
+        setInterval(() => {
+            currentTestimonial = (currentTestimonial + 1) % testimonials.length;
+            showTestimonial(currentTestimonial);
+        }, 5000);
+
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    
+                    // Trigger counter animation for about section
+                    if (entry.target.closest('#about')) {
+                        setTimeout(animateCounters, 500);
+                    }
+                }
+            });
+        }, observerOptions);
+
+        // Observe fade-in elements
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Parallax effect removed for about image to keep it static
+
+        // Contact form submission
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const submitBtn = this.querySelector('.submit-btn');
+            const originalText = submitBtn.textContent;
+            
+            submitBtn.textContent = 'Sending...';
+            submitBtn.disabled = true;
+            
+            setTimeout(() => {
+                alert('Thank you for your message! We will get back to you within 24 hours to discuss your event details.');
+                this.reset();
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            }, 2000);
+        });
+
+        // Booking modal functions
+        function openBookingModal() {
+            document.getElementById('bookingModal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeBookingModal() {
+            document.getElementById('bookingModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Service modal functions
+        function openModal(type) {
+            const modal = document.getElementById(type + 'Modal');
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close modals when clicking outside
+        window.addEventListener('click', function(e) {
+            if (e.target.classList.contains('booking-modal')) {
+                e.target.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        // Booking form submission
+        document.getElementById('bookingForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Thank you for your booking request! We will contact you within 4 hours to confirm your event details.');
+            closeBookingModal();
+        });
+
+        // Gallery lightbox effect
+        document.querySelectorAll('.gallery-item img').forEach(img => {
+            img.addEventListener('click', () => {
+                const lightbox = document.createElement('div');
+                lightbox.style.cssText = `
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: rgba(0,0,0,0.9);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    z-index: 4000;
+                    cursor: pointer;
+                    animation: fadeInUp 0.3s ease;
+                `;
+                
+                const enlargedImg = document.createElement('img');
+                enlargedImg.src = img.src;
+                enlargedImg.style.cssText = `
+                    max-width: 90%;
+                    max-height: 90%;
+                    object-fit: contain;
+                    border-radius: 15px;
+                    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+                `;
+                
+                lightbox.appendChild(enlargedImg);
+                document.body.appendChild(lightbox);
+                
+                lightbox.addEventListener('click', () => {
+                    document.body.removeChild(lightbox);
+                });
+            });
+        });
+
+        // Theme Management
+        let currentTheme = localStorage.getItem('theme') || 'light';
+        
+        function initializeTheme() {
+            document.documentElement.setAttribute('data-theme', currentTheme);
+            updateThemeIcons();
+        }
+        
+        function toggleTheme() {
+            currentTheme = currentTheme === 'light' ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', currentTheme);
+            localStorage.setItem('theme', currentTheme);
+            updateThemeIcons();
+            updateHeaderBackground(); // Update header immediately when theme changes
+            showToast('Theme switched to ' + currentTheme + ' mode', 'success');
+        }
+        
+        function updateHeaderBackground() {
+            const header = document.querySelector('header');
+            const isDarkMode = document.documentElement.getAttribute('data-theme') === 'dark';
+            
+            if (window.scrollY > 100) {
+                if (isDarkMode) {
+                    header.style.background = 'rgba(31, 41, 55, 0.98)';
+                    header.style.boxShadow = '0 2px 20px rgba(0,0,0,0.4)';
+                } else {
+                    header.style.background = 'rgba(255, 255, 255, 0.98)';
+                    header.style.boxShadow = '0 2px 20px rgba(0,0,0,0.15)';
+                }
+            } else {
+                if (isDarkMode) {
+                    header.style.background = 'rgba(31, 41, 55, 0.95)';
+                    header.style.boxShadow = '0 2px 20px rgba(0,0,0,0.3)';
+                } else {
+                    header.style.background = 'rgba(255, 255, 255, 0.95)';
+                    header.style.boxShadow = '0 2px 20px rgba(0,0,0,0.1)';
+                }
+            }
+        }
+        
+        function updateThemeIcons() {
+            const icons = document.querySelectorAll('#themeToggle i, #themeToggleNav i');
+            icons.forEach(icon => {
+                icon.className = currentTheme === 'light' ? 'fas fa-moon' : 'fas fa-sun';
+            });
+        }
+
+        // Toast Notifications
+        function showToast(message, type = 'info') {
+            const toastContainer = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            
+            const icon = {
+                success: 'fas fa-check-circle',
+                error: 'fas fa-exclamation-circle',
+                warning: 'fas fa-exclamation-triangle',
+                info: 'fas fa-info-circle'
+            }[type];
+            
+            toast.innerHTML = `
+                <i class="${icon}"></i>
+                <span>${message}</span>
+            `;
+            
+            toastContainer.appendChild(toast);
+            
+            setTimeout(() => toast.classList.add('show'), 100);
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toastContainer.removeChild(toast), 300);
+            }, 3000);
+        }
+
+        // Live Chat System
+        let chatMessages = [];
+        
+        function toggleChat() {
+            const chatWindow = document.getElementById('chatWindow');
+            const isVisible = chatWindow.style.display === 'flex';
+            chatWindow.style.display = isVisible ? 'none' : 'flex';
+            
+            if (!isVisible) {
+                showToast('Chat opened - Our support team is here to help!', 'info');
+            }
+        }
+        
+        function sendChatMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            
+            if (message) {
+                addChatMessage(message, 'user');
+                input.value = '';
+                
+                // Simulate bot response
+                setTimeout(() => {
+                    const responses = [
+                        "Thank you for your message! How can I help you with your catering needs?",
+                        "I'd be happy to help you plan your event. What type of occasion are you planning?",
+                        "Great question! Let me connect you with our catering specialist.",
+                        "We have several menu options available. Would you like me to send you our latest catalog?",
+                        "I can help you with pricing and availability. What's your event date?"
+                    ];
+                    const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+                    addChatMessage(randomResponse, 'bot');
+                }, 1000);
+            }
+        }
+        
+        function addChatMessage(message, sender) {
+            const messagesContainer = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `chat-message ${sender}`;
+            
+            if (sender === 'bot') {
+                messageDiv.innerHTML = `<i class="fas fa-robot" style="margin-right: 8px;"></i>${message}`;
+            } else {
+                messageDiv.textContent = message;
+            }
+            
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        // Newsletter Management
+        function closeNewsletter() {
+            document.getElementById('newsletterPopup').style.display = 'none';
+            localStorage.setItem('newsletterShown', 'true');
+        }
+        
+        function showNewsletterPopup() {
+            if (!localStorage.getItem('newsletterShown')) {
+                setTimeout(() => {
+                    document.getElementById('newsletterPopup').style.display = 'flex';
+                }, 10000); // Show after 10 seconds
+            }
+        }
+
+        // Advanced Search Functionality
+        const searchData = [
+            { title: 'Wagyu Beef Wellington', category: 'menu', content: 'Premium wagyu beef wrapped in pastry', section: 'menu' },
+            { title: 'Lobster Thermidor', category: 'menu', content: 'Fresh lobster in creamy sauce', section: 'menu' },
+            { title: 'Artisan Canapés', category: 'menu', content: 'Handcrafted appetizers', section: 'menu' },
+            { title: 'Wedding Catering', category: 'service', content: 'Complete wedding catering services', section: 'services' },
+            { title: 'Corporate Events', category: 'service', content: 'Professional corporate catering', section: 'services' },
+            { title: 'Private Parties', category: 'service', content: 'Intimate private party catering', section: 'services' },
+            { title: 'Chocolate Soufflé Recipe', category: 'blog', content: 'Master the perfect chocolate soufflé', section: 'blog' },
+            { title: 'Pizza Recipe', category: 'blog', content: 'Artisan wood-fired pizza techniques', section: 'blog' },
+            { title: 'Catering Tips', category: 'blog', content: 'Professional catering advice', section: 'blog' }
+        ];
+        
+        function performSearch(query, resultsId) {
+            const results = document.getElementById(resultsId);
+            
+            if (query.length < 2) {
+                results.style.display = 'none';
+                return;
+            }
+            
+            const filteredResults = searchData.filter(item => 
+                item.title.toLowerCase().includes(query.toLowerCase()) ||
+                item.content.toLowerCase().includes(query.toLowerCase())
+            );
+            
+            if (filteredResults.length > 0) {
+                results.innerHTML = filteredResults.map(item => `
+                    <div class="search-result-item" onclick="navigateToSection('${item.section}')">
+                        <strong>${item.title}</strong>
+                        <p style="margin: 0; color: #6b7280; font-size: 0.9rem;">${item.content}</p>
+                    </div>
+                `).join('');
+                results.style.display = 'block';
+            } else {
+                results.innerHTML = '<div class="search-result-item">No results found</div>';
+                results.style.display = 'block';
+            }
+        }
+        
+        function navigateToSection(section) {
+            document.getElementById(section).scrollIntoView({ behavior: 'smooth' });
+            document.querySelectorAll('.search-results').forEach(el => el.style.display = 'none');
+        }
+
+        // Interactive Menu Builder
+        let selectedMenuItems = [];
+        let builderTotal = 0;
+        
+        function updateMenuBuilder() {
+            const checkboxes = document.querySelectorAll('.menu-item-checkbox');
+            selectedMenuItems = [];
+            builderTotal = 0;
+            
+            checkboxes.forEach(checkbox => {
+                if (checkbox.checked) {
+                    const item = {
+                        name: checkbox.dataset.name,
+                        price: parseFloat(checkbox.dataset.price)
+                    };
+                    selectedMenuItems.push(item);
+                    builderTotal += item.price;
+                }
+            });
+            
+            updateBuilderDisplay();
+        }
+        
+        function updateBuilderDisplay() {
+            const selectedItemsDiv = document.getElementById('selectedItems');
+            const totalSpan = document.getElementById('builderTotal');
+            
+            if (selectedMenuItems.length === 0) {
+                selectedItemsDiv.innerHTML = '<p>Select items to build your custom menu</p>';
+            } else {
+                selectedItemsDiv.innerHTML = selectedMenuItems.map(item => 
+                    `<div style="margin: 0.5rem 0; padding: 0.5rem; background: rgba(255,255,255,0.2); border-radius: 10px;">
+                        ${item.name} - $${item.price}
+                    </div>`
+                ).join('');
+            }
+            
+            totalSpan.textContent = builderTotal.toFixed(0);
+        }
+        
+        function saveCustomMenu() {
+            if (selectedMenuItems.length === 0) {
+                showToast('Please select at least one menu item', 'warning');
+                return;
+            }
+            
+            const menuData = {
+                items: selectedMenuItems,
+                total: builderTotal,
+                timestamp: new Date().toISOString()
+            };
+            
+            localStorage.setItem('customMenu', JSON.stringify(menuData));
+            showToast(`Custom menu saved! Total: $${builderTotal}`, 'success');
+        }
+
+        // Review System
+        let currentRating = 0;
+        
+        function initializeReviewSystem() {
+            const stars = document.querySelectorAll('.star');
+            stars.forEach((star, index) => {
+                star.addEventListener('click', () => setRating(index + 1));
+                star.addEventListener('mouseover', () => highlightStars(index + 1));
+            });
+            
+            document.getElementById('starRating').addEventListener('mouseleave', () => highlightStars(currentRating));
+        }
+        
+        function setRating(rating) {
+            currentRating = rating;
+            highlightStars(rating);
+        }
+        
+        function highlightStars(rating) {
+            const stars = document.querySelectorAll('.star');
+            stars.forEach((star, index) => {
+                star.classList.toggle('active', index < rating);
+            });
+        }
+        
+        function handlePhotoUpload(event) {
+            const files = event.target.files;
+            const preview = document.getElementById('photoPreview');
+            preview.innerHTML = '';
+            
+            Array.from(files).forEach(file => {
+                if (file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const img = document.createElement('img');
+                        img.src = e.target.result;
+                        img.style.cssText = 'width: 80px; height: 80px; object-fit: cover; border-radius: 10px; border: 2px solid var(--primary-color);';
+                        preview.appendChild(img);
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+        
+        function submitReview(event) {
+            event.preventDefault();
+            
+            const name = document.getElementById('reviewName').value;
+            const eventType = document.getElementById('reviewEventType').value;
+            const reviewText = document.getElementById('reviewText').value;
+            
+            if (currentRating === 0) {
+                showToast('Please select a rating', 'warning');
+                return;
+            }
+            
+            const review = {
+                name,
+                eventType,
+                rating: currentRating,
+                text: reviewText,
+                timestamp: new Date().toISOString()
+            };
+            
+            addReviewToDisplay(review);
+            document.getElementById('reviewForm').reset();
+            currentRating = 0;
+            highlightStars(0);
+            document.getElementById('photoPreview').innerHTML = '';
+            
+            showToast('Thank you for your review!', 'success');
+        }
+        
+        function addReviewToDisplay(review) {
+            const reviewsGrid = document.getElementById('reviewsGrid');
+            const reviewCard = document.createElement('div');
+            reviewCard.className = 'review-card';
+            
+            const stars = '★'.repeat(review.rating) + '☆'.repeat(5 - review.rating);
+            const initials = review.name.split(' ').map(n => n[0]).join('').toUpperCase();
+            
+            reviewCard.innerHTML = `
+                <div class="review-header">
+                    <div class="review-avatar">${initials}</div>
+                    <div>
+                        <h4>${review.name}</h4>
+                        <div class="review-stars" style="color: #fbbf24;">${stars}</div>
+                        <small style="color: #6b7280;">${review.eventType} • Just now</small>
+                    </div>
+                </div>
+                <p>"${review.text}"</p>
+            `;
+            
+            reviewsGrid.insertBefore(reviewCard, reviewsGrid.firstChild);
+        }
+
+        // Virtual Tour
+        const tourSections = {
+            prep: {
+                image: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                title: 'Prep Area',
+                description: 'Our spacious prep area where fresh ingredients are carefully prepared'
+            },
+            cooking: {
+                image: 'https://images.unsplash.com/photo-1571997478779-2adcbbe9ab2f?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                title: 'Cooking Stations',
+                description: 'Professional-grade cooking stations with the latest culinary equipment'
+            },
+            pastry: {
+                image: 'https://images.unsplash.com/photo-1551218808-94e220e084d2?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                title: 'Pastry Kitchen',
+                description: 'Dedicated pastry kitchen for creating exquisite desserts and baked goods'
+            },
+            storage: {
+                image: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+                title: 'Storage Areas',
+                description: 'Climate-controlled storage ensuring ingredient freshness and quality'
+            }
+        };
+        
+        function startVirtualTour() {
+            showToast('Virtual tour started! Use the buttons below to explore different areas.', 'info');
+            tourSection('prep');
+        }
+        
+        function tourSection(section) {
+            const viewer = document.getElementById('tourViewer');
+            const sectionData = tourSections[section];
+            
+            viewer.innerHTML = `
+                <img src="${sectionData.image}" alt="${sectionData.title}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 20px;">
+                <div style="position: absolute; bottom: 20px; left: 20px; right: 20px; background: rgba(0,0,0,0.8); color: white; padding: 1rem; border-radius: 15px;">
+                    <h4 style="margin: 0 0 0.5rem 0;">${sectionData.title}</h4>
+                    <p style="margin: 0;">${sectionData.description}</p>
+                </div>
+            `;
+            
+            showToast(`Now viewing: ${sectionData.title}`, 'info');
+        }
+
+        // Interactive Map
+        function initializeMap() {
+            if (typeof L !== 'undefined') {
+                const map = L.map('serviceMap').setView([40.7128, -74.0060], 10);
+                
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '© OpenStreetMap contributors'
+                }).addTo(map);
+                
+                // Add service area markers
+                const serviceAreas = [
+                    { lat: 40.7128, lng: -74.0060, name: 'Manhattan' },
+                    { lat: 40.6782, lng: -73.9442, name: 'Brooklyn' },
+                    { lat: 40.7282, lng: -73.7949, name: 'Queens' },
+                    { lat: 40.8176, lng: -73.8782, name: 'Bronx' }
+                ];
+                
+                serviceAreas.forEach(area => {
+                    L.marker([area.lat, area.lng])
+                        .addTo(map)
+                        .bindPopup(`<b>${area.name}</b><br>Full service area`)
+                        .openPopup();
+                });
+            }
+        }
+
+        // Blog Functionality
+        function initializeBlogFilters() {
+            const blogTabs = document.querySelectorAll('[data-blog-category]');
+            blogTabs.forEach(tab => {
+                tab.addEventListener('click', () => filterBlogPosts(tab.dataset.blogCategory));
+            });
+        }
+        
+        function filterBlogPosts(category) {
+            const blogCards = document.querySelectorAll('.blog-card');
+            const tabs = document.querySelectorAll('[data-blog-category]');
+            
+            // Update active tab
+            tabs.forEach(tab => {
+                tab.classList.remove('active');
+                tab.style.background = 'var(--card-bg)';
+                tab.style.color = 'var(--text-color)';
+                tab.style.border = '2px solid var(--border-color)';
+            });
+            
+            const activeTab = document.querySelector(`[data-blog-category="${category}"]`);
+            activeTab.classList.add('active');
+            activeTab.style.background = 'var(--gradient-primary)';
+            activeTab.style.color = 'white';
+            activeTab.style.border = 'none';
+            
+            // Filter posts
+            blogCards.forEach(card => {
+                if (category === 'all' || card.dataset.category === category) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+            
+            showToast(`Showing ${category === 'all' ? 'all' : category} posts`, 'info');
+        }
+        
+        function loadMoreBlogPosts() {
+            showToast('Loading more posts...', 'info');
+            // Simulate loading more posts
+            setTimeout(() => {
+                showToast('All posts loaded!', 'success');
+            }, 1000);
+        }
+
+        // Enhanced Form Validation
+        function validateEmail(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(email);
+        }
+        
+        function validatePhone(phone) {
+            const re = /^[\+]?[1-9][\d]{0,15}$/;
+            return re.test(phone.replace(/\s/g, ''));
+        }
+        
+        function showFieldError(fieldId, message) {
+            const field = document.getElementById(fieldId);
+            field.style.borderColor = '#ef4444';
+            
+            let errorDiv = field.parentNode.querySelector('.field-error');
+            if (!errorDiv) {
+                errorDiv = document.createElement('div');
+                errorDiv.className = 'field-error';
+                errorDiv.style.cssText = 'color: #ef4444; font-size: 0.8rem; margin-top: 0.5rem;';
+                field.parentNode.appendChild(errorDiv);
+            }
+            errorDiv.textContent = message;
+        }
+        
+        function clearFieldError(fieldId) {
+            const field = document.getElementById(fieldId);
+            field.style.borderColor = 'var(--border-color)';
+            
+            const errorDiv = field.parentNode.querySelector('.field-error');
+            if (errorDiv) {
+                errorDiv.remove();
+            }
+        }
+
+        // Event Listeners
+        function initializeEventListeners() {
+            // Theme toggles
+            document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+            document.getElementById('themeToggleNav').addEventListener('click', toggleTheme);
+            
+            // Chat functionality
+            document.getElementById('chatToggle').addEventListener('click', toggleChat);
+            document.getElementById('chatSend').addEventListener('click', sendChatMessage);
+            document.getElementById('chatInput').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') sendChatMessage();
+            });
+            
+            // Search functionality
+            document.getElementById('menuSearch').addEventListener('input', (e) => {
+                performSearch(e.target.value, 'searchResults');
+            });
+            
+            document.getElementById('blogSearch').addEventListener('input', (e) => {
+                performSearch(e.target.value, 'blogSearchResults');
+            });
+            
+            // Menu builder
+            document.querySelectorAll('.menu-item-checkbox').forEach(checkbox => {
+                checkbox.addEventListener('change', updateMenuBuilder);
+            });
+            
+            // Newsletter form
+            document.getElementById('newsletterForm').addEventListener('submit', (e) => {
+                e.preventDefault();
+                const email = e.target.querySelector('input[type="email"]').value;
+                if (validateEmail(email)) {
+                    showToast('Successfully subscribed to newsletter!', 'success');
+                    closeNewsletter();
+                } else {
+                    showToast('Please enter a valid email address', 'error');
+                }
+            });
+            
+            // Review form
+            document.getElementById('reviewForm').addEventListener('submit', submitReview);
+            document.getElementById('reviewPhotos').addEventListener('change', handlePhotoUpload);
+            
+            // Close search results when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.search-container')) {
+                    document.querySelectorAll('.search-results').forEach(el => el.style.display = 'none');
+                }
+            });
+        }
+
+        // Initialize particles and price calculator on load
+        window.addEventListener('load', () => {
+            initializeTheme();
+            createHeroParticles();
+            updatePrice();
+            showNewsletterPopup();
+            initializeEventListeners();
+            initializeReviewSystem();
+            initializeBlogFilters();
+            
+            // Initialize map with a delay to ensure DOM is ready
+            setTimeout(() => {
+                initializeMap();
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
+
